@@ -1,0 +1,76 @@
+<script>
+  if (sessionStorage.getItem("authorized") !== "true") {
+    window.location.href = "login.html";
+  }
+</script>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Valentine Letter</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Aldrich&family=Pixelify+Sans:wght@400..700&display=swap"
+      rel="stylesheet"
+    />
+    <title>Document</title>
+  </head>
+  <body>
+    <!-- Countdown Screen -->
+    <div id="countdown-container">
+      <div class="countdown-content">
+        <video id="countdown-video" autoplay muted playsinline>
+          <source src="countdown-video.mp4" type="video/mp4">
+          <img id="countdown-gif" src="cute-gif.gif" alt="Cute animation" />
+        </video>
+      </div>
+    </div>
+
+    <!-- Envelope Screen -->
+    <div id="envelope-container">
+      <img src="envelope.png" alt="Envelope" id="envelope" />
+      <p>♡ Letter for Taly ♡</p>
+    </div>
+
+    <!-- Letter Screen -->
+    <div id="letter-container">
+      <div class="letter-window">
+        <h1 id="letter-title">Will you be my Valentine?</h1>
+
+        <img src="capy_please_heart.gif" class="capy" id="letter-capy" />
+
+        <div class="buttons" id="letter-buttons">
+          <img src="yes.png" class="btn yes-btn" alt="Yes" />
+
+          <div class="no-wrapper">
+            <img src="no.png" class="btn no-btn" alt="No" />
+          </div>
+        </div>
+
+        <p id="final-text" class="final-text" style="display: none">
+          <strong>Mwehehe,</strong> I love you so much pretty girl ko.
+        </p>
+      </div>
+    </div>
+    <audio id="bgMusic" loop>
+      <source src="background-music.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="countdownAudio" autoplay>
+      <source src="countdown-audio.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="yesSound">
+      <source src="yes-sound.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="yesSound2">
+      <source src="yes-sound-2.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="noSound">
+      <source src="no-sound.mp3" type="audio/mpeg">
+    </audio>
+    <script src="script.js"></script>
+  </body>
+</html>

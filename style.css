@@ -1,0 +1,198 @@
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url("bunnywabbit-bg.jpg");
+    background-size: 80%;
+    animation: slideBackground 60s linear infinite alternate;
+    font-family: "Pixelify Sans", sans-serif;
+    overflow: hidden;
+}
+
+@keyframes slideBackground {
+    0% {
+        background-position: 0 0;
+    }
+    100% {
+        background-position: -50% -50%;
+    }
+}
+
+/* Countdown Screen */
+#countdown-container {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url("bunnywabbit-bg.jpg");
+    background-size: 80%;
+    animation: slideBackground 60s linear infinite alternate;
+    z-index: 1000;
+    overflow: hidden;
+}
+
+.countdown-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+#countdown-video {
+    max-width: 90vw;
+    max-height: 90vh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+}
+
+#countdown-gif {
+    max-width: 90vw;
+    max-height: 90vh;
+    object-fit: contain;
+}
+
+/* Envelope Screen */
+#envelope-container {
+    display: none;
+    text-align: center;
+    cursor:pointer;
+}
+
+#envelope-container p {
+    font-size: 32px;
+    margin-top: 60px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+@keyframes pulse {
+    0% {
+        transform:scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+#envelope{
+    width: 200px;
+    animation: pulse 1.5s infinite;
+    cursor: pointer;
+}
+
+#letter-container{
+    display: none;
+    position:fixed;
+    inset: 0;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.letter-window{
+    width: 90vw;
+    max-width: 600px;
+    max-height: 80vh;
+    aspect-ratio: 3/2;
+    padding: 20px 20px 0 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-image: url("window.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 12px;
+    gap: 10px;
+    padding-top: 145px;
+
+    transform: scale(1.2);
+    opacity: 0;
+    transition: transform 0.6s ease, opacity 0.6s ease;
+}
+
+.letter-window.open {
+    transform: scale(1);
+    opacity: 1;
+}
+
+h1 {
+    font-size: 22px;
+    margin: 0;
+}
+
+p {
+    font-size: 22px;
+}
+
+/* Capy */
+
+.capy {
+    width: 160px;
+    margin: 5px 0;
+    transition: width 0.4s ease;
+}
+
+.letter-window.final .capy {
+    width: 120px;
+}
+
+/* buttons */
+.buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    position: relative;
+}
+
+.no-wrapper {
+    position: relative;
+    width: 90px;
+    height: 90px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn {
+    width: 90px;
+    height: auto;
+    cursor: pointer;
+    user-select: none;
+}
+
+.yes-btn {
+    position: relative;
+    z-index: 2;
+    cursor: pointer;
+}
+
+.no-btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    cursor: default;
+    will-change: transform;
+}
+
+.converted-yes-btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    cursor: pointer;
+    will-change: transform;
+}
