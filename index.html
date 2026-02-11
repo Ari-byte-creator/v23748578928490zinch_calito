@@ -21,12 +21,14 @@
   </head>
   <body>
     <!-- Curtain - Added -->
-    <div id="curtain"></div>
+    <div id="curtain">
+      <div class="loading-indicator">Please Wait, while I ready</div>
+    </div>
 
     <!-- Countdown Screen -->
     <div id="countdown-container">
       <div class="countdown-content">
-        <video id="countdown-video" autoplay muted playsinline>
+        <video id="countdown-video" autoplay muted playsinline preload="auto">
           <source src="countdown-video.mp4" type="video/mp4">
           <img id="countdown-gif" src="cute-gif.gif" alt="Cute animation" />
         </video>

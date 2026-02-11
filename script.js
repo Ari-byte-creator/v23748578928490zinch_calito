@@ -25,8 +25,27 @@ yesSound.muted = true;
 yesSound2.muted = true;
 noSound.muted = true;
 
-// Raise curtain after 3 seconds
-setTimeout(() => {
+// Track if video is loaded
+let videoLoaded = false;
+let curtainCanRise = false;
+
+// Wait for video to be ready to play
+countdownVideo.addEventListener('canplaythrough', () => {
+    videoLoaded = true;
+    console.log("Video loaded and ready");
+    if (curtainCanRise) {
+        raiseCurtain();
+    }
+}, { once: true });
+
+// Also handle if video is already loaded
+if (countdownVideo.readyState >= 3) { // HAVE_FUTURE_DATA or better
+    videoLoaded = true;
+    console.log("Video already loaded");
+}
+
+// Function to raise curtain
+const raiseCurtain = () => {
     curtain.classList.add("raised");
     
     // Unmute countdown audio after curtain rises
@@ -37,6 +56,17 @@ setTimeout(() => {
     yesSound.muted = false;
     yesSound2.muted = false;
     noSound.muted = false;
+};
+
+// Wait for minimum 3 seconds, then check if video is ready
+setTimeout(() => {
+    curtainCanRise = true;
+    if (videoLoaded) {
+        raiseCurtain();
+    } else {
+        console.log("Waiting for video to load...");
+        // The canplaythrough event will trigger raiseCurtain when ready
+    }
 }, CURTAIN_DELAY);
 
 // Countdown Timer - wait for audio/video to finish naturally

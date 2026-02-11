@@ -39,6 +39,23 @@ body {
     transform: translateY(-100%);
 }
 
+/* Loading indicator */
+.loading-indicator {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 18px;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+    font-family: "Pixelify Sans", sans-serif;
+    animation: pulse 1.5s infinite;
+}
+
+#curtain.raised .loading-indicator {
+    display: none;
+}
+
 /* Countdown Screen */
 #countdown-container {
     position: fixed;
