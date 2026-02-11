@@ -233,7 +233,7 @@ function playCountdownSync() {
             const elapsed = Date.now() - fadeOutStart;
             const progress = Math.min(elapsed / fadeOutDuration, 1);
             
-            countdownAudio.volume = 0.5 * (1 - progress);
+            countdownAudio.volume = 0.25 * (1 - progress);
             countdownVideo.style.opacity = 1 - progress;
             
             if (progress === 1) {
