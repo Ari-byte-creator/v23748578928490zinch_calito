@@ -322,15 +322,15 @@ const triggerYesResponse = (button) => {
         
         const responses = [
             "Sure?",
-            "Really sure?",
-            "Are you certain? 🥺",
+            "Sure??",
+            "Pag sure ba 🥺",
             "Pwease? 🥺👉👈",
             "Pretty sure?",
             "Super duper sure?",
-            "100% sure? 💕",
+            "100milliontawsan% sure? 💕",
             "Absolutely certain?",
             "Pinky promise sure?",
-            "With your whole heart sure?"
+            "I love you."
         ];
         
         title.textContent = responses[yesClickCount - 1];
