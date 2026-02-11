@@ -20,6 +20,25 @@ body {
     }
 }
 
+/* Curtain - Added */
+#curtain {
+    position: fixed;
+    inset: 0;
+    background-image: url("curtain.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    z-index: 99999;
+    pointer-events: none;
+    transform: translateY(0%);
+    transition: transform 3s cubic-bezier(0.25, 0.1, 0.25, 1);
+    box-shadow: inset 0 -40px 40px rgba(0,0,0,0.6);
+}
+
+#curtain.raised {
+    transform: translateY(-100%);
+}
+
 /* Countdown Screen */
 #countdown-container {
     position: fixed;
@@ -188,11 +207,5 @@ p {
 }
 
 .converted-yes-btn {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 2;
-    cursor: pointer;
     will-change: transform;
 }

@@ -10,12 +10,34 @@ const countdownVideo = document.getElementById("countdown-video");
 const yesSound = document.getElementById("yesSound");
 const yesSound2 = document.getElementById("yesSound2");
 const noSound = document.getElementById("noSound");
+const curtain = document.getElementById("curtain");
 
+const CURTAIN_DELAY = 3000; // 3 seconds for curtain to rise
 const PRE_COUNTDOWN_DELAY = 3000; // 3 seconds
 
-// Set background music to quiet volume
+// Set background music to quiet volume and mute initially
 bgMusic.volume = 0.05;
 bgMusic.muted = true;
+
+// Mute all audio initially
+countdownAudio.muted = true;
+yesSound.muted = true;
+yesSound2.muted = true;
+noSound.muted = true;
+
+// Raise curtain after 3 seconds
+setTimeout(() => {
+    curtain.classList.add("raised");
+    
+    // Unmute countdown audio after curtain rises
+    countdownAudio.muted = false;
+    countdownAudio.volume = 0.5;
+    
+    // Unmute other sounds
+    yesSound.muted = false;
+    yesSound2.muted = false;
+    noSound.muted = false;
+}, CURTAIN_DELAY);
 
 // Countdown Timer - wait for audio/video to finish naturally
 const countdownDuration = 76000; // 76 seconds in milliseconds
@@ -69,13 +91,28 @@ const playCountdownSync = () => {
     countdownVideo.currentTime = 0;
     countdownAudio.currentTime = 0;
     
-    // Unmute the audio and set volume
-    countdownAudio.muted = false;
+    // Audio will already be unmuted by the curtain timer
+    // Just set the volume
     countdownAudio.volume = 0.5;
     
     // Play video and audio at the exact same time
     countdownVideo.play().catch(err => console.log("Video play error:", err));
     countdownAudio.play().catch(err => console.log("Audio play error:", err));
+    
+    // Lightweight sync check - only check every 500ms to reduce performance impact
+    const syncInterval = setInterval(() => {
+        if (countdownEnded) {
+            clearInterval(syncInterval);
+            return;
+        }
+        
+        const timeDiff = Math.abs(countdownVideo.currentTime - countdownAudio.currentTime);
+        
+        // Only resync if they drift more than 0.3 seconds apart
+        if (timeDiff > 0.3) {
+            countdownVideo.currentTime = countdownAudio.currentTime;
+        }
+    }, 500); // Check every 500ms (less frequent, less lag)
     
     // Transition when audio finishes (most reliable)
     countdownAudio.onended = transitionFromCountdown;
@@ -119,6 +156,10 @@ const catImg = document.getElementById("letter-capy");
 const buttons = document.getElementById("letter-buttons");
 const finalText = document.getElementById("final-text");
 
+// Yes button click counter
+let yesClickCount = 0;
+const MAX_YES_CLICKS = 6;
+
 // Click Envelope
 
 envelope.addEventListener("click", () => {
@@ -131,17 +172,38 @@ envelope.addEventListener("click", () => {
 });
 
 // Function to trigger the yes response
-const triggerYesResponse = () => {
+const triggerYesResponse = (button) => {
+    yesClickCount++;
+    
+    // Play sound on every click
     yesSound.currentTime = 0;
     yesSound.play();
-    yesSound2.currentTime = 0;
-    yesSound2.play();
     
-    title.textContent = "Yippeeee! Valentine na kita Taly";
-    catImg.src = "capy_happy.gif";
-    document.querySelector(".letter-window").classList.add("final");
-    buttons.style.display = "none";
-    finalText.style.display = "block";
+    if (yesClickCount < MAX_YES_CLICKS) {
+        // Expand the button slightly
+        const currentScale = 1 + (yesClickCount * 0.15); // Each click adds 15% scale
+        button.style.transform = `scale(${currentScale})`;
+        button.style.transition = "transform 0.3s ease";
+        
+        // Update title text
+        if (yesClickCount === 1) {
+            title.textContent = "Sure?";
+        } else {
+            // Add more question marks
+            const questionMarks = "?".repeat(yesClickCount);
+            title.textContent = "Sure?" + questionMarks;
+        }
+    } else {
+        // On the 6th click, accept the response
+        yesSound2.currentTime = 0;
+        yesSound2.play();
+        
+        title.textContent = "Yippeeee! Valentine na kita Taly";
+        catImg.src = "capy_happy.gif";
+        document.querySelector(".letter-window").classList.add("final");
+        buttons.style.display = "none";
+        finalText.style.display = "block";
+    }
 };
 
 // Logic to move the NO btn - BULLETPROOF VIEWPORT CONSTRAINT
@@ -211,8 +273,8 @@ noBtn.addEventListener("mouseover", () => {
         // Insert it in the same wrapper as the no button
         noBtn.parentElement.appendChild(convertedYesButton);
         
-        // Add click listener to the new yes button
-        convertedYesButton.addEventListener("click", triggerYesResponse);
+        // Add click listener to the new yes button - pass button reference
+        convertedYesButton.addEventListener("click", () => triggerYesResponse(convertedYesButton));
         
         // Reset position trackers for the new button
         convertedYesTransformX = 0;
@@ -250,7 +312,7 @@ noBtn.addEventListener("mouseover", () => {
 });
 
 // YES button click handler
-yesBtn.addEventListener("click", triggerYesResponse);
+yesBtn.addEventListener("click", () => triggerYesResponse(yesBtn));
 
 // Handle window resize to recalculate constraints
 window.addEventListener("resize", () => {
@@ -266,5 +328,23 @@ window.addEventListener("resize", () => {
         convertedYesTransformX = constrainedConverted.x;
         convertedYesTransformY = constrainedConverted.y;
         convertedYesButton.style.transform = `translate(${convertedYesTransformX}px, ${convertedYesTransformY}px)`;
+    }
+});
+
+// Handle visibility change to prevent audio/video desync when tab is hidden
+document.addEventListener("visibilitychange", () => {
+    if (!countdownEnded) {
+        if (document.hidden) {
+            // Tab is hidden - pause both
+            countdownVideo.pause();
+            countdownAudio.pause();
+        } else {
+            // Tab is visible again - resume and resync
+            const audioTime = countdownAudio.currentTime;
+            countdownVideo.currentTime = audioTime; // Sync video to audio
+            
+            countdownVideo.play().catch(err => console.log("Video resume error:", err));
+            countdownAudio.play().catch(err => console.log("Audio resume error:", err));
+        }
     }
 });
