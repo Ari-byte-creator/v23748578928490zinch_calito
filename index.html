@@ -1,8 +1,3 @@
-<script>
-  if (sessionStorage.getItem("authorized") !== "true") {
-    window.location.href = "login.html";
-  }
-</script>
 <!doctype html>
 <html lang="en">
   <head>
@@ -17,10 +12,25 @@
       href="https://fonts.googleapis.com/css2?family=Aldrich&family=Pixelify+Sans:wght@400..700&display=swap"
       rel="stylesheet"
     />
-    <title>Document</title>
+    <title>Valentine Letter</title>
+    
+    <!-- Preload critical assets -->
+    <link rel="preload" as="image" href="envelope.png" />
+    <link rel="preload" as="image" href="window.png" />
+    <link rel="preload" as="image" href="curtain.png" />
+    <link rel="preload" as="image" href="capy_please_heart.gif" />
+    <link rel="preload" as="image" href="capy_happy.gif" />
+    <link rel="preload" as="image" href="yes.png" />
+    <link rel="preload" as="image" href="no.png" />
   </head>
   <body>
-    <!-- Curtain - Added -->
+    <script>
+      if (sessionStorage.getItem("authorized") !== "true") {
+        window.location.href = "login.html";
+      }
+    </script>
+
+    <!-- Curtain -->
     <div id="curtain">
       <div class="loading-indicator">Please Wait, while I ready</div>
     </div>
@@ -28,8 +38,18 @@
     <!-- Countdown Screen -->
     <div id="countdown-container">
       <div class="countdown-content">
-        <video id="countdown-video" autoplay muted playsinline preload="auto">
+        <video 
+          id="countdown-video" 
+          playsinline 
+          preload="auto"
+          crossorigin="anonymous"
+          muted
+          style="display: block;">
+          <!-- MP4 format (primary) -->
           <source src="countdown-video.mp4" type="video/mp4">
+          <!-- WebM format (fallback for better compression on some browsers) -->
+          <source src="countdown-video.webm" type="video/webm">
+          <!-- Fallback image -->
           <img id="countdown-gif" src="cute-gif.gif" alt="Cute animation" />
         </video>
       </div>
@@ -61,21 +81,24 @@
         </p>
       </div>
     </div>
-    <audio id="bgMusic" loop>
+
+    <!-- Audio Elements -->
+    <audio id="bgMusic" loop preload="auto">
       <source src="background-music.mp3" type="audio/mpeg">
     </audio>
-    <audio id="countdownAudio" autoplay>
+    <audio id="countdownAudio" preload="auto">
       <source src="countdown-audio.mp3" type="audio/mpeg">
     </audio>
-    <audio id="yesSound">
+    <audio id="yesSound" preload="auto">
       <source src="yes-sound.mp3" type="audio/mpeg">
     </audio>
-    <audio id="yesSound2">
+    <audio id="yesSound2" preload="auto">
       <source src="yes-sound-2.mp3" type="audio/mpeg">
     </audio>
-    <audio id="noSound">
+    <audio id="noSound" preload="auto">
       <source src="no-sound.mp3" type="audio/mpeg">
     </audio>
+
     <script src="script.js"></script>
   </body>
 </html>
