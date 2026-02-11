@@ -280,7 +280,13 @@ function getConstrainedPosition(x, y, button) {
     return { x: constrainedX, y: constrainedY };
 }
 
-noBtn.addEventListener("mouseover", () => {
+noBtn.addEventListener("mouseover", handleNoButtonInteraction);
+noBtn.addEventListener("touchstart", (e) => {
+    e.preventDefault(); // Prevent default touch behavior
+    handleNoButtonInteraction();
+});
+
+function handleNoButtonInteraction() {
     noButtonMoveCount++;
     
     noSound.currentTime = 0;
@@ -297,6 +303,8 @@ noBtn.addEventListener("mouseover", () => {
         convertedYesButton.alt = "Yes";
         convertedYesButton.classList.add("btn", "yes-btn", "converted-yes-btn");
         convertedYesButton.style.position = "absolute";
+        convertedYesButton.style.top = "50%";
+        convertedYesButton.style.left = "50%";
         convertedYesButton.style.zIndex = "10";
         convertedYesButton.style.cursor = "pointer";
         
@@ -309,10 +317,11 @@ noBtn.addEventListener("mouseover", () => {
         // Reset position trackers for the new button
         convertedYesTransformX = 0;
         convertedYesTransformY = 0;
-        convertedYesButton.style.transform = `translate(0px, 0px)`;
+        convertedYesButton.style.transform = `translate(-50%, -50%)`;
         
-        // Remove the mouseover event listener from original no button
-        noBtn.removeEventListener("mouseover", arguments.callee);
+        // Remove the mouseover and touchstart event listeners from original no button
+        noBtn.removeEventListener("mouseover", handleNoButtonInteraction);
+        noBtn.removeEventListener("touchstart", handleNoButtonInteraction);
         
         return;
     }
@@ -339,7 +348,7 @@ noBtn.addEventListener("mouseover", () => {
 
     noBtn.style.transition = "transform 0.3s ease";
     noBtn.style.transform = `translate(${newX}px, ${newY}px)`;
-});
+}
 
 // YES button click handler
 yesBtn.addEventListener("click", () => triggerYesResponse(yesBtn));
