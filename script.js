@@ -11,6 +11,8 @@ const yesSound = document.getElementById("yesSound");
 const yesSound2 = document.getElementById("yesSound2");
 const noSound = document.getElementById("noSound");
 
+const PRE_COUNTDOWN_DELAY = 3000; // 3 seconds
+
 // Set background music to quiet volume
 bgMusic.volume = 0.05;
 bgMusic.muted = true;
@@ -108,7 +110,9 @@ const playCountdownSync = () => {
     setTimeout(transitionFromCountdown, countdownDuration);
 };
 
-playCountdownSync();
+setTimeout(() => {
+    playCountdownSync();
+}, PRE_COUNTDOWN_DELAY);
 
 const title = document.getElementById("letter-title");
 const catImg = document.getElementById("letter-capy");
